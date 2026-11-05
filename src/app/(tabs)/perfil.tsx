@@ -95,7 +95,7 @@ export default function PerfilScreen() {
       )}
 
       <Button
-        title="Enviar aviso (chega em 2 segundos)"
+        title="Enviar aviso"
         variante="secundario"
         onPress={avisar}
         style={styles.botao}
