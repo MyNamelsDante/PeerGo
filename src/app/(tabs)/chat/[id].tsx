@@ -86,9 +86,9 @@ export default function ConversaScreen() {
       options={{
         headerShown: true,
         title: titulo,
-        headerTintColor: cores.primaria,
-        headerStyle: { backgroundColor: cores.superficie },
-        headerTitleStyle: { color: cores.texto },
+        headerTintColor: '#FFFFFF',
+        headerStyle: { backgroundColor: cores.marinho },
+        headerTitleStyle: { color: '#FFFFFF' },
         headerBackButtonDisplayMode: 'minimal',
       }}
     />

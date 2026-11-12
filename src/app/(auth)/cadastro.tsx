@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '../../components/atoms/Button';
+import { Fundo } from '../../components/atoms/Fundo';
 import { Input } from '../../components/atoms/Input';
 import { Label } from '../../components/atoms/Label';
 import { cadastrar, DOMINIO_INSTITUCIONAL, emailInstitucional } from '../../services/auth';
@@ -53,6 +54,7 @@ export default function CadastroScreen() {
   }
 
   return (
+    <Fundo>
     <KeyboardAvoidingView style={styles.tela} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView
         contentContainerStyle={[
@@ -60,8 +62,8 @@ export default function CadastroScreen() {
           { paddingTop: insets.top + espacamentos.xl, paddingBottom: insets.bottom + espacamentos.xl },
         ]}
         keyboardShouldPersistTaps="handled">
-        <Label variante="titulo">Criar conta</Label>
-        <Label variante="legenda" style={styles.subtitulo}>
+        <Label variante="titulo" claro>Criar conta</Label>
+        <Label variante="legenda" claro style={styles.subtitulo}>
           O PeerGo é só para estudantes. Use seu e-mail institucional.
         </Label>
 
@@ -127,12 +129,13 @@ export default function CadastroScreen() {
         <Button title="Criar conta" onPress={criarConta} carregando={carregando} style={styles.botao} />
 
         <Pressable onPress={() => router.back()} accessibilityRole="link" style={styles.link} hitSlop={8}>
-          <Label variante="legenda">
+          <Label variante="legenda" claro>
             Já tem conta? <Label variante="legenda" style={styles.linkDestaque}>Entrar</Label>
           </Label>
         </Pressable>
       </ScrollView>
     </KeyboardAvoidingView>
+    </Fundo>
   );
 }
 
@@ -150,12 +153,12 @@ function Campo({ erro, children }: { erro?: string; children: ReactNode }) {
 }
 
 const styles = StyleSheet.create({
-  tela: { flex: 1, backgroundColor: cores.fundo },
+  tela: { flex: 1, backgroundColor: 'transparent' },
   conteudo: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: espacamentos.lg },
   subtitulo: { marginBottom: espacamentos.md },
   campo: { marginTop: espacamentos.md, gap: espacamentos.xs },
-  erro: { color: cores.perigo },
+  erro: { color: '#FFB4A8' },
   botao: { marginTop: espacamentos.lg },
   link: { alignSelf: 'center', marginTop: espacamentos.lg, padding: espacamentos.sm },
-  linkDestaque: { color: cores.primaria, fontWeight: '600' },
+  linkDestaque: { color: '#7FE3C4', fontWeight: '600' },
 });

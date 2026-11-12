@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { Button } from '../../components/atoms/Button';
+import { Fundo } from '../../components/atoms/Fundo';
 import { Label } from '../../components/atoms/Label';
 import { CabecalhoPerfil } from '../../components/molecules/CabecalhoPerfil';
 import { HistoricoServicos } from '../../components/molecules/HistoricoServicos';
@@ -105,15 +106,18 @@ export default function PerfilScreen() {
 
   if (carregando) {
     return (
+      <Fundo>
       <ScrollView contentContainerStyle={[styles.container, styles.centro]}>
         <ActivityIndicator color={cores.primaria} />
       </ScrollView>
+      </Fundo>
     );
   }
 
   return (
+    <Fundo>
     <ScrollView contentContainerStyle={styles.container}>
-      <Label variante="titulo">Meu perfil</Label>
+      <Label variante="titulo" claro>Meu perfil</Label>
 
       {perfil && (
         <CabecalhoPerfil
@@ -126,23 +130,23 @@ export default function PerfilScreen() {
         />
       )}
 
-      <Label variante="subtitulo" style={styles.secao}>
+      <Label variante="subtitulo" claro style={styles.secao}>
         Histórico recente
       </Label>
       <HistoricoServicos bicos={historico} />
 
-      <Label variante="subtitulo" style={styles.secao}>
+      <Label variante="subtitulo" claro style={styles.secao}>
         Foto do perfil
       </Label>
       <Button title="Tirar foto" onPress={tirarFoto} />
       <Button title="Escolher da galeria" variante="secundario" onPress={escolherDaGaleria} style={styles.botao} />
 
-      <Label variante="subtitulo" style={styles.secao}>
+      <Label variante="subtitulo" claro style={styles.secao}>
         Recursos do aparelho (teste)
       </Label>
       <Button title="Ver minha localização" onPress={verLocalizacao} />
       {posicao && (
-        <Label variante="legenda" style={styles.espaco}>
+        <Label variante="legenda" claro style={styles.espaco}>
           {`Lat ${posicao.latitude.toFixed(5)}, Long ${posicao.longitude.toFixed(5)}`}
         </Label>
       )}
@@ -150,16 +154,17 @@ export default function PerfilScreen() {
 
       {permissoes && (
         <>
-          <Label variante="subtitulo" style={styles.secao}>
+          <Label variante="subtitulo" claro style={styles.secao}>
             Permissões
           </Label>
-          <Label variante="legenda">{`Câmera: ${permissoes.camera}`}</Label>
-          <Label variante="legenda">{`Galeria: ${permissoes.galeria}`}</Label>
-          <Label variante="legenda">{`Localização: ${permissoes.localizacao}`}</Label>
-          <Label variante="legenda">{`Notificações: ${permissoes.notificacoes}`}</Label>
+          <Label variante="legenda" claro>{`Câmera: ${permissoes.camera}`}</Label>
+          <Label variante="legenda" claro>{`Galeria: ${permissoes.galeria}`}</Label>
+          <Label variante="legenda" claro>{`Localização: ${permissoes.localizacao}`}</Label>
+          <Label variante="legenda" claro>{`Notificações: ${permissoes.notificacoes}`}</Label>
         </>
       )}
     </ScrollView>
+    </Fundo>
   );
 }
 
@@ -167,7 +172,7 @@ const styles = StyleSheet.create({
   container: {
     padding: espacamentos.lg,
     paddingTop: espacamentos.xl * 2,
-    backgroundColor: cores.fundo,
+    backgroundColor: 'transparent',
     flexGrow: 1,
   },
   centro: { justifyContent: 'center', alignItems: 'center' },

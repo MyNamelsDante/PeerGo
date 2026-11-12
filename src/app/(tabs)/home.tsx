@@ -4,6 +4,7 @@ import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Vie
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '../../components/atoms/Button';
+import { Fundo } from '../../components/atoms/Fundo';
 import { Label } from '../../components/atoms/Label';
 import { BicoCard } from '../../components/molecules/BicoCard';
 import { FiltroCategorias } from '../../components/molecules/FiltroCategorias';
@@ -67,11 +68,11 @@ export default function HomeScreen() {
   }
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + espacamentos.md }]}>
+    <Fundo style={[styles.container, { paddingTop: insets.top + espacamentos.md }]}>
       <View style={styles.cabecalho}>
         <View style={styles.saudacao}>
-          <Label variante="legenda">{usuario ? `Olá, ${usuario.nome.split(' ')[0]}` : ' '}</Label>
-          <Label variante="titulo">Mural de bicos</Label>
+          <Label variante="legenda" claro>{usuario ? `Olá, ${usuario.nome.split(' ')[0]}` : ' '}</Label>
+          <Label variante="titulo" claro>Mural de bicos</Label>
         </View>
         <Pressable onPress={sair} accessibilityRole="button" hitSlop={12}>
           <Label variante="legenda" style={styles.sair}>
@@ -88,7 +89,7 @@ export default function HomeScreen() {
         <ActivityIndicator color={cores.primaria} style={styles.carregando} />
       ) : erro ? (
         <View style={styles.vazio}>
-          <Label variante="legenda">{erro}</Label>
+          <Label variante="legenda" claro>{erro}</Label>
           <Button title="Tentar de novo" variante="secundario" onPress={puxarParaAtualizar} style={styles.botao} />
         </View>
       ) : (
@@ -107,20 +108,20 @@ export default function HomeScreen() {
           }
           ListEmptyComponent={
             <View style={styles.vazio}>
-              <Label variante="subtitulo">Nenhum bico por aqui</Label>
-              <Label variante="legenda">
+              <Label variante="subtitulo" claro>Nenhum bico por aqui</Label>
+              <Label variante="legenda" claro>
                 {categoria ? 'Tente outra categoria.' : 'Seja o primeiro a publicar um bico!'}
               </Label>
             </View>
           }
         />
       )}
-    </View>
+    </Fundo>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: cores.fundo },
+  container: { flex: 1 },
   cabecalho: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: espacamentos.lg,
   },
   saudacao: { flex: 1 },
-  sair: { color: cores.primaria, fontWeight: '600', paddingTop: espacamentos.xs },
+  sair: { color: '#7FE3C4', fontWeight: '600', paddingTop: espacamentos.xs },
   filtros: { marginVertical: espacamentos.md },
   carregando: { marginTop: espacamentos.xl },
   lista: {

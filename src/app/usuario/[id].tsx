@@ -42,9 +42,9 @@ export default function PerfilPublicoScreen() {
       options={{
         headerShown: true,
         title: perfil?.nome ?? 'Perfil',
-        headerTintColor: cores.primaria,
-        headerStyle: { backgroundColor: cores.superficie },
-        headerTitleStyle: { color: cores.texto },
+        headerTintColor: '#FFFFFF',
+        headerStyle: { backgroundColor: cores.marinho },
+        headerTitleStyle: { color: '#FFFFFF' },
         headerBackButtonDisplayMode: 'minimal',
       }}
     />

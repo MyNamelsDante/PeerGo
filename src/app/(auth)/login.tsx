@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Button } from '../../components/atoms/Button';
+import { Fundo } from '../../components/atoms/Fundo';
 import { Input } from '../../components/atoms/Input';
 import { Label } from '../../components/atoms/Label';
 import { login } from '../../services/auth';
@@ -29,9 +30,9 @@ export default function LoginScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <Label variante="titulo">PeerGo</Label>
-      <Label variante="legenda" style={styles.subtitulo}>
+    <Fundo style={styles.container}>
+      <Label variante="titulo" claro>PeerGo</Label>
+      <Label variante="legenda" claro style={styles.subtitulo}>
         Entre com seu e-mail institucional
       </Label>
 
@@ -65,11 +66,11 @@ export default function LoginScreen() {
         accessibilityRole="link"
         style={styles.link}
         hitSlop={8}>
-        <Label variante="legenda">
+        <Label variante="legenda" claro>
           Ainda não tem conta? <Label variante="legenda" style={styles.linkDestaque}>Cadastre-se</Label>
         </Label>
       </Pressable>
-    </View>
+    </Fundo>
   );
 }
 
@@ -78,12 +79,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: espacamentos.lg,
-    backgroundColor: cores.fundo,
+    backgroundColor: 'transparent',
   },
   subtitulo: { marginBottom: espacamentos.lg },
   campo: { marginTop: espacamentos.md },
-  erro: { color: cores.perigo, marginTop: espacamentos.sm },
+  erro: { color: '#FFB4A8', marginTop: espacamentos.sm },
   botao: { marginTop: espacamentos.lg },
   link: { alignSelf: 'center', marginTop: espacamentos.lg, padding: espacamentos.sm },
-  linkDestaque: { color: cores.primaria, fontWeight: '600' },
+  linkDestaque: { color: '#7FE3C4', fontWeight: '600' },
 });

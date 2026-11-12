@@ -13,6 +13,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '../../components/atoms/Button';
+import { Fundo } from '../../components/atoms/Fundo';
 import { Input } from '../../components/atoms/Input';
 import { Label } from '../../components/atoms/Label';
 import { TextArea } from '../../components/atoms/TextArea';
@@ -140,14 +141,15 @@ export default function CriarBicoScreen() {
   }
 
   return (
+    <Fundo>
     <KeyboardAvoidingView
       style={styles.tela}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView
         contentContainerStyle={[styles.conteudo, { paddingTop: insets.top + espacamentos.md }]}
         keyboardShouldPersistTaps="handled">
-        <Label variante="titulo">Criar bico</Label>
-        <Label variante="legenda">Descreva o que você precisa. Leva menos de um minuto.</Label>
+        <Label variante="titulo" claro>Criar bico</Label>
+        <Label variante="legenda" claro>Descreva o que você precisa. Leva menos de um minuto.</Label>
 
         <Campo titulo="Título" erro={erros.titulo}>
           <Input
@@ -176,7 +178,7 @@ export default function CriarBicoScreen() {
             maxLength={500}
             erro={!!erros.descricao}
           />
-          <Label variante="legenda" style={styles.contador}>
+          <Label variante="legenda" claro style={styles.contador}>
             {`${descricao.length}/500`}
           </Label>
         </Campo>
@@ -230,20 +232,21 @@ export default function CriarBicoScreen() {
             })}
           </View>
           {prazoDias !== null && (
-            <Label variante="legenda">{`Até ${formatarDataCompleta(dataDaquiA(prazoDias))}`}</Label>
+            <Label variante="legenda" claro>{`Até ${formatarDataCompleta(dataDaquiA(prazoDias))}`}</Label>
           )}
         </Campo>
 
         <Button title="Publicar bico" onPress={publicar} carregando={enviando} style={styles.publicar} />
       </ScrollView>
     </KeyboardAvoidingView>
+    </Fundo>
   );
 }
 
 function Campo({ titulo, erro, children }: { titulo: string; erro?: string; children: ReactNode }) {
   return (
     <View style={styles.campo}>
-      <Label style={styles.campoTitulo}>{titulo}</Label>
+      <Label style={styles.campoTitulo} claro>{titulo}</Label>
       {children}
       {erro && (
         <Label variante="legenda" style={styles.erro}>
@@ -255,14 +258,14 @@ function Campo({ titulo, erro, children }: { titulo: string; erro?: string; chil
 }
 
 const styles = StyleSheet.create({
-  tela: { flex: 1, backgroundColor: cores.fundo },
+  tela: { flex: 1, backgroundColor: 'transparent' },
   conteudo: { padding: espacamentos.lg, paddingBottom: espacamentos.xl * 2 },
   campo: { marginTop: espacamentos.lg, gap: espacamentos.sm },
   campoTitulo: { fontWeight: '600' },
-  erro: { color: cores.perigo },
+  erro: { color: '#FFB4A8' },
   contador: { textAlign: 'right' },
   valorLinha: { flexDirection: 'row', alignItems: 'center', gap: espacamentos.sm },
-  prefixo: { fontSize: tipografia.subtitulo, fontWeight: '700', color: cores.texto },
+  prefixo: { fontSize: tipografia.subtitulo, fontWeight: '700', color: '#FFFFFF' },
   valorInput: { flex: 1 },
   botaoLocal: { minHeight: 44 },
   prazos: { flexDirection: 'row', flexWrap: 'wrap', gap: espacamentos.sm },

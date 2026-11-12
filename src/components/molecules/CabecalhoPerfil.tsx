@@ -45,7 +45,14 @@ export function CabecalhoPerfil({
 }
 
 const styles = StyleSheet.create({
-  bloco: { alignItems: 'center', gap: espacamentos.sm, paddingVertical: espacamentos.md },
+  bloco: {
+    alignItems: 'center',
+    gap: espacamentos.sm,
+    paddingVertical: espacamentos.lg,
+    paddingHorizontal: espacamentos.lg,
+    backgroundColor: cores.superficie,
+    borderRadius: 20,
+  },
   foto: { width: 112, height: 112, borderRadius: 56, marginBottom: espacamentos.sm },
   semFoto: { backgroundColor: cores.primaria, alignItems: 'center', justifyContent: 'center' },
   inicial: { color: '#FFFFFF', fontSize: 44, fontWeight: '700' },
