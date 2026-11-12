@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Button } from '../../components/atoms/Button';
 import { Input } from '../../components/atoms/Input';
@@ -59,6 +59,16 @@ export default function LoginScreen() {
       )}
 
       <Button title="Entrar" onPress={entrar} carregando={carregando} style={styles.botao} />
+
+      <Pressable
+        onPress={() => router.push('/(auth)/cadastro')}
+        accessibilityRole="link"
+        style={styles.link}
+        hitSlop={8}>
+        <Label variante="legenda">
+          Ainda não tem conta? <Label variante="legenda" style={styles.linkDestaque}>Cadastre-se</Label>
+        </Label>
+      </Pressable>
     </View>
   );
 }
@@ -74,4 +84,6 @@ const styles = StyleSheet.create({
   campo: { marginTop: espacamentos.md },
   erro: { color: cores.perigo, marginTop: espacamentos.sm },
   botao: { marginTop: espacamentos.lg },
+  link: { alignSelf: 'center', marginTop: espacamentos.lg, padding: espacamentos.sm },
+  linkDestaque: { color: cores.primaria, fontWeight: '600' },
 });

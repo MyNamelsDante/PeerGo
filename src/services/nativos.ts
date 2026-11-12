@@ -101,6 +101,15 @@ export async function obterPosicao(): Promise<Posicao> {
 }
 
 
+// Descobre o nome do bairro onde a pessoa está (para preencher formulários)
+export async function obterBairroAtual(): Promise<string | null> {
+  const { latitude, longitude } = await obterPosicao();
+  const [endereco] = await Location.reverseGeocodeAsync({ latitude, longitude });
+  if (!endereco) return null;
+  return endereco.district ?? endereco.subregion ?? endereco.city ?? null;
+}
+
+
 let handlerPronto = false;
 
 // Define como a notificação aparece quando o app está aberto

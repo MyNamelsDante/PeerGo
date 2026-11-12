@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Alert, Image, ScrollView, StyleSheet } from 'react-native';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { Button } from '../../components/atoms/Button';
 import { Label } from '../../components/atoms/Label';
+import { CabecalhoPerfil } from '../../components/molecules/CabecalhoPerfil';
+import { HistoricoServicos } from '../../components/molecules/HistoricoServicos';
+import { obterSessao } from '../../services/auth';
+import { listarHistorico, obterPerfil } from '../../services/bicos';
 import {
   capturarFoto,
   enviarAvisoLocal,
@@ -12,9 +17,13 @@ import {
   type Posicao,
   type StatusPermissoes,
 } from '../../services/nativos';
-import { cores, espacamentos, raios } from '../../theme';
+import { cores, espacamentos } from '../../theme';
+import type { Bico, PerfilPublico } from '../../types';
 
 export default function PerfilScreen() {
+  const [perfil, setPerfil] = useState<PerfilPublico | null>(null);
+  const [historico, setHistorico] = useState<Bico[]>([]);
+  const [carregando, setCarregando] = useState(true);
   const [fotoUri, setFotoUri] = useState<string | null>(null);
   const [posicao, setPosicao] = useState<Posicao | null>(null);
   const [permissoes, setPermissoes] = useState<StatusPermissoes | null>(null);
@@ -23,9 +32,36 @@ export default function PerfilScreen() {
     setPermissoes(await statusPermissoes());
   }
 
-  useEffect(() => {
-    atualizarPermissoes();
-  }, []);
+  // Recarrega sempre que a aba volta a aparecer (avaliações e histórico podem ter mudado)
+  useFocusEffect(
+    useCallback(() => {
+      let ativo = true;
+      setCarregando(true);
+
+      (async () => {
+        const sessao = await obterSessao();
+        if (sessao) {
+          const [dadosPerfil, dadosHistorico] = await Promise.all([
+            obterPerfil(sessao.id),
+            listarHistorico(sessao.id),
+          ]);
+          if (ativo) {
+            setPerfil(dadosPerfil);
+            setHistorico(dadosHistorico);
+          }
+        }
+        await atualizarPermissoes();
+      })()
+        .catch(() => {})
+        .finally(() => {
+          if (ativo) setCarregando(false);
+        });
+
+      return () => {
+        ativo = false;
+      };
+    }, []),
+  );
 
   // Roda uma ação, mostra o erro (se der) e atualiza o status das permissões
   async function executar(acao: () => Promise<void>) {
@@ -67,39 +103,50 @@ export default function PerfilScreen() {
     });
   }
 
+  if (carregando) {
+    return (
+      <ScrollView contentContainerStyle={[styles.container, styles.centro]}>
+        <ActivityIndicator color={cores.primaria} />
+      </ScrollView>
+    );
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Label variante="titulo">Meu perfil</Label>
 
-      {fotoUri ? (
-        <Image source={{ uri: fotoUri }} style={styles.foto} />
-      ) : (
-        <Label variante="legenda" style={styles.espaco}>
-          Nenhuma foto ainda
-        </Label>
+      {perfil && (
+        <CabecalhoPerfil
+          nome={perfil.nome}
+          curso={perfil.curso}
+          nota={perfil.nota}
+          avaliacoes={perfil.avaliacoes}
+          servicosPrestados={perfil.servicosPrestados}
+          fotoUri={fotoUri}
+        />
       )}
 
-      <Button title="Tirar foto" onPress={tirarFoto} style={styles.botao} />
-      <Button
-        title="Escolher da galeria"
-        variante="secundario"
-        onPress={escolherDaGaleria}
-        style={styles.botao}
-      />
+      <Label variante="subtitulo" style={styles.secao}>
+        Histórico recente
+      </Label>
+      <HistoricoServicos bicos={historico} />
 
-      <Button title="Ver minha localização" onPress={verLocalizacao} style={styles.botao} />
+      <Label variante="subtitulo" style={styles.secao}>
+        Foto do perfil
+      </Label>
+      <Button title="Tirar foto" onPress={tirarFoto} />
+      <Button title="Escolher da galeria" variante="secundario" onPress={escolherDaGaleria} style={styles.botao} />
+
+      <Label variante="subtitulo" style={styles.secao}>
+        Recursos do aparelho (teste)
+      </Label>
+      <Button title="Ver minha localização" onPress={verLocalizacao} />
       {posicao && (
         <Label variante="legenda" style={styles.espaco}>
           {`Lat ${posicao.latitude.toFixed(5)}, Long ${posicao.longitude.toFixed(5)}`}
         </Label>
       )}
-
-      <Button
-        title="Enviar aviso"
-        variante="secundario"
-        onPress={avisar}
-        style={styles.botao}
-      />
+      <Button title="Enviar aviso" variante="secundario" onPress={avisar} style={styles.botao} />
 
       {permissoes && (
         <>
@@ -123,14 +170,8 @@ const styles = StyleSheet.create({
     backgroundColor: cores.fundo,
     flexGrow: 1,
   },
-  foto: {
-    width: 160,
-    height: 160,
-    borderRadius: raios.lg,
-    alignSelf: 'center',
-    marginVertical: espacamentos.lg,
-  },
-  espaco: { marginVertical: espacamentos.md },
-  botao: { marginTop: espacamentos.md },
+  centro: { justifyContent: 'center', alignItems: 'center' },
   secao: { marginTop: espacamentos.xl, marginBottom: espacamentos.sm },
+  botao: { marginTop: espacamentos.md },
+  espaco: { marginVertical: espacamentos.md },
 });
